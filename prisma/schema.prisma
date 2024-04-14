@@ -7,33 +7,52 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Partner {
-  id            String  @id @unique
-  tradingName   String
-  ownerName     String
-  document      String
-  coverageAreas CoverageAreas[]
-  address       Address[]
+model Partner{
+  id         String @id @default(uuid())
+  tradingName String
+  ownerName  String
+  document   String @unique
 
-  @@map(name: "partners") 
+  Address Address[]
+  CoverageArea CoverageArea[]
+  Pdvs Pdvs[]
+  
+
+  @@map("partners")
 }
 
-model Address {
-    id        String  @id 
-    partner   Partner @relation(fields: [id], references: [id])
-    partnerId String @unique
-    type      String 
-    coordinates Int[]
+model Address{
+  id         String @id @default(uuid())
+  id_partner String
+  partner    Partner  @relation(fields: [id_partner], references: [id])
+  type       String
+  coordinates Json
 
-    @@map("addresses")
+  Pdvs Pdvs[]
+
+  @@map("addresses")
 }
 
-model CoverageAreas{
-    id         String  @id 
-    partner    Partner @relation(fields: [id], references: [id])
-    partnerId  String @unique
-    type       String 
-    coordinates Int[]
+model CoverageArea{
+  id         String @id @default(uuid())
+  id_partner String
+  partner    Partner  @relation(fields: [id_partner], references: [id])
+  type       String
+  coordinates Json
 
-    @@map("coverage_areas")
+  Pdvs Pdvs[]
+
+  @@map("coverage_areas")
+}
+
+model Pdvs{
+  id         String @id @default(uuid())
+  id_partner String
+  partner    Partner  @relation(fields: [id_partner], references: [id])
+  id_address String
+  address    Address  @relation(fields: [id_address], references: [id])
+  id_coverage String
+  coverage   CoverageArea  @relation(fields: [id_coverage], references: [id])
+
+  @@map("pdvs")
 }
