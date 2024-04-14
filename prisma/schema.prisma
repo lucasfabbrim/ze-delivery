@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Partner {
+  id            String  @id @unique
+  tradingName   String
+  ownerName     String
+  document      String
+  coverageAreas CoverageAreas[]
+  address     Address[]
+
+  @@map(name: "partners") 
+}
+
+model Address{
+    id         String  @id 
+    partner Partner @relation(fields: [id], references: [id])
+    partnerId String @unique
+    type String 
+    coordinates Int[]
+}
+
+model CoverageAreas{
+    id         String  @id 
+    partner    Partner @relation(fields: [id], references: [id])
+    partnerId  String @unique
+    type       String 
+    coordinates Int[]
+}

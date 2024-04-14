@@ -1,0 +1,6 @@
+{
+  "dataworkspace.excludedProjects": [
+    "ze-delivery/ze-delivery.sqlproj",
+    "as/as.sqlproj"
+  ]
+}
