@@ -13,17 +13,19 @@ model Partner {
   ownerName     String
   document      String
   coverageAreas CoverageAreas[]
-  address     Address[]
+  address       Address[]
 
   @@map(name: "partners") 
 }
 
-model Address{
-    id         String  @id 
-    partner Partner @relation(fields: [id], references: [id])
+model Address {
+    id        String  @id 
+    partner   Partner @relation(fields: [id], references: [id])
     partnerId String @unique
-    type String 
+    type      String 
     coordinates Int[]
+
+    @@map("addresses")
 }
 
 model CoverageAreas{
@@ -32,4 +34,6 @@ model CoverageAreas{
     partnerId  String @unique
     type       String 
     coordinates Int[]
+
+    @@map("coverage_areas")
 }
